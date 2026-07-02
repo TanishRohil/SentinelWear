@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>SentinelWear - Mine Safety Portal</title>
 <style>
   :root {
@@ -22,35 +22,43 @@
     --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.02);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Helvetica', Arial, sans-serif; background: var(--off-wh); color: var(--text); }
+  body { font-family: 'Helvetica', Arial, sans-serif; background: var(--off-wh); color: var(--text); -webkit-tap-highlight-color: transparent; }
 
   /* SYSTEM SOS HEADERBAR */
   #system-sos-bar {
     background: var(--red);
     color: white;
     font-weight: bold;
-    font-size: 14px;
-    padding: 12px 20px;
+    font-size: 13px;
+    padding: 12px 16px;
     display: none;
+    flex-direction: column;
+    gap: 8px;
     align-items: center;
-    justify-content: space-between;
+    text-align: center;
     box-shadow: var(--shadow);
     z-index: 99;
+  }
+  @media (min-width: 576px) {
+    #system-sos-bar { flex-direction: row; justify-content: space-between; text-align: left; font-size: 14px; }
   }
 
   /* LOGIN */
   #login-screen {
     min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    background: var(--teal-dk);
+    background: var(--teal-dk); padding: 16px;
   }
   .login-card {
-    background: var(--white); border-radius: 16px; padding: 40px 36px; width: 360px;
+    background: var(--white); border-radius: 16px; padding: 32px 24px; width: 100%; max-width: 380px;
     border: 1px solid var(--teal-lt); box-shadow: var(--shadow-md);
+  }
+  @media (min-width: 400px) {
+    .login-card { padding: 40px 36px; }
   }
   .login-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
   .login-logo-icon {
     width: 40px; height: 40px; background: var(--teal); border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .login-logo-icon svg { width: 22px; height: 22px; fill: white; }
   .login-logo-name { font-size: 18px; font-weight: 600; color: var(--teal-dk); }
@@ -60,8 +68,9 @@
   .form-group { margin-bottom: 16px; }
   .form-group label { display: block; font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 6px; }
   .form-group input {
-    width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
-    font-size: 14px; outline: none; transition: border-color .2s;
+    width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px;
+    font-size: 14px; outline: none; transition: border-color .2s; background: var(--white);
+    -webkit-appearance: none;
   }
   .form-group input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(14,148,136,.12); }
   .login-btn {
@@ -73,50 +82,73 @@
   
   /* CREDENTIALS WATERMARK HINT */
   .credentials-hint {
-    margin-top: 20px; padding: 10px; background: var(--teal-bg); 
+    margin-top: 20px; padding: 12px; background: var(--teal-bg); 
     border: 1px dashed var(--teal); border-radius: 8px; text-align: center;
   }
   .credentials-hint p { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-  .credentials-hint code { font-size: 12px; color: var(--teal-dk); font-weight: bold; }
+  .credentials-hint code { font-size: 12px; color: var(--teal-dk); font-weight: bold; background: rgba(255,255,255,0.6); padding: 1px 4px; border-radius: 4px; }
 
   /* APP SHELL */
   #app { display: none; height: 100vh; flex-direction: column; }
 
   /* TOPBAR */
   .topbar {
-    background: var(--teal-dk); color: white; padding: 0 20px; height: 52px;
-    display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
-    box-shadow: var(--shadow); z-index: 10;
+    background: var(--teal-dk); color: white; padding: 0 16px; min-height: 56px;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; flex-shrink: 0;
+    box-shadow: var(--shadow); z-index: 10; gap: 8px;
   }
-  .topbar-left { display: flex; align-items: center; gap: 12px; }
+  .topbar-left { display: flex; align-items: center; gap: 8px; }
   .topbar-logo { font-size: 15px; font-weight: 600; letter-spacing: .3px; }
-  .topbar-mine { font-size: 12px; background: rgba(178,223,219,.25); padding: 3px 10px; border-radius: 20px; color: var(--teal-lt); }
-  .topbar-right { display: flex; align-items: center; gap: 16px; font-size: 12px; color: var(--teal-lt); }
+  .topbar-mine { font-size: 11px; background: rgba(178,223,219,.25); padding: 2px 8px; border-radius: 20px; color: var(--teal-lt); font-weight: 500; }
+  .topbar-right { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--teal-lt); }
   .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; display: inline-block; margin-right: 4px; animation: pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-  .shift-badge { background: rgba(178,223,219,.2); padding: 3px 10px; border-radius: 6px; }
-  .topbar-user { display: flex; align-items: center; gap: 7px; cursor: pointer; }
-  .topbar-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; border: 1px solid rgba(255,255,255,.3); }
-  .logout-btn { font-size: 11px; background: rgba(255,255,255,.12); padding: 4px 10px; border-radius: 6px; cursor: pointer; border: none; color: white; }
+  .shift-badge { background: rgba(178,223,219,.2); padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
+  .topbar-user { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .topbar-avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; border: 1px solid rgba(255,255,255,.3); }
+  .logout-btn { font-size: 11px; background: rgba(255,255,255,.12); padding: 5px 10px; border-radius: 6px; cursor: pointer; border: none; color: white; }
   .logout-btn:hover { background: rgba(255,255,255,.22); }
 
-  /* BODY GRAPHICS */
-  .body { display: flex; flex: 1; overflow: hidden; }
+  /* BODY NAVIGATION GRAPHICS */
+  .body { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+  @media (min-width: 768px) {
+    .body { flex-direction: row; }
+  }
 
-  /* SIDEBAR */
-  .sidebar { width: 200px; background: var(--teal-dk); flex-shrink: 0; display: flex; flex-direction: column; padding: 12px 0; overflow-y: auto; }
-  .nav-section { font-size: 10px; color: #5DCAA5; padding: 14px 14px 4px; letter-spacing: .8px; font-weight: 600; }
+  /* SIDEBAR (Responsive Nav Container) */
+  .sidebar { 
+    width: 100%; background: var(--teal-dk); flex-shrink: 0; display: flex; 
+    flex-direction: row; padding: 0; overflow-x: auto; overflow-y: hidden;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+  }
+  .sidebar::-webkit-scrollbar { display: none; } /* Hide scrollbar for Chrome/Safari */
+  
+  .nav-section { display: none; } /* Hide layout sections headers on mobile row views */
+  
   .nav-item {
-    padding: 10px 14px; font-size: 13px; color: #B2DFDB; cursor: pointer;
-    display: flex; align-items: center; gap: 9px; transition: all .15s; border-left: 3px solid transparent;
+    padding: 14px 16px; font-size: 13px; color: #B2DFDB; cursor: pointer;
+    display: flex; align-items: center; gap: 6px; transition: all .15s; 
+    border-bottom: 3px solid transparent; border-left: none; white-space: nowrap;
   }
   .nav-item:hover { background: rgba(255,255,255,.07); color: white; }
-  .nav-item.active { background: rgba(255,255,255,.1); color: white; border-left-color: white; }
-  .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
-  .nav-badge { margin-left: auto; background: var(--red); color: white; font-size: 9px; padding: 1px 6px; border-radius: 10px; font-weight: 600; }
+  .nav-item.active { background: rgba(255,255,255,.1); color: white; border-bottom-color: white; }
+  .nav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .nav-badge { background: var(--red); color: white; font-size: 9px; padding: 1px 5px; border-radius: 10px; font-weight: 600; margin-left: 4px; }
 
-  /* CONTENT CONTENT DISPLAY AREA */
-  .content { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+  @media (min-width: 768px) {
+    .sidebar { width: 200px; flex-direction: column; overflow-y: auto; overflow-x: hidden; padding: 12px 0; border-bottom: none; }
+    .nav-section { display: block; font-size: 10px; color: #5DCAA5; padding: 14px 14px 4px; letter-spacing: .8px; font-weight: 600; }
+    .nav-item { padding: 10px 14px; border-left: 3px solid transparent; border-bottom: none; }
+    .nav-item.active { border-left-color: white; }
+    .nav-badge { margin-left: auto; }
+  }
+
+  /* CONTENT DISPLAY AREA */
+  .content { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 14px; }
+  @media (min-width: 576px) {
+    .content { padding: 20px; gap: 20px; }
+  }
 
   /* PAGE SECTIONS */
   .page { display: none; }
@@ -124,92 +156,131 @@
 
   /* SIMULATOR BAR */
   .simulator-panel {
-    background: #FFF9E6; border: 1px solid #FFE0B2; padding: 12px 16px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: space-between; font-size: 13px;
+    background: #FFF9E6; border: 1px solid #FFE0B2; padding: 12px 14px; border-radius: 10px;
+    display: flex; flex-direction: column; gap: 10px; align-items: flex-start; font-size: 12px;
+  }
+  @media (min-width: 576px) {
+    .simulator-panel { flex-direction: row; justify-content: space-between; align-items: center; font-size: 13px; }
+  }
+  .simulator-panel button { width: 100%; }
+  @media (min-width: 576px) {
+    .simulator-panel button { width: auto; }
   }
 
   /* STAT CARDS */
-  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .stat { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 16px; box-shadow: var(--shadow); transition: transform 0.2s; }
-  .stat:hover { transform: translateY(-2px); }
-  .stat-label { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .stat-val { font-size: 26px; font-weight: 700; color: var(--teal); }
+  .stat-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  @media (min-width: 768px) {
+    .stat-row { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  }
+  .stat { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 12px; box-shadow: var(--shadow); }
+  @media (min-width: 576px) {
+    .stat { padding: 16px; }
+  }
+  .stat-label { font-size: 10px; color: var(--muted); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-val { font-size: 20px; font-weight: 700; color: var(--teal); }
+  @media (min-width: 576px) {
+    .stat-val { font-size: 26px; }
+  }
   .stat-val.red { color: var(--red); }
   .stat-val.amber { color: var(--amber); }
-  .stat-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .stat-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
 
   /* PANELS */
-  .panels { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; }
+  .panels { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 992px) {
+    .panels { grid-template-columns: 1.2fr 1fr; gap: 16px; }
+  }
   .panel { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
-  .panel-head { padding: 12px 16px; background: var(--teal-bg); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
-  .panel-title { font-size: 14px; font-weight: 600; color: var(--teal-dk); }
-  .panel-meta { font-size: 11px; color: var(--muted); }
-  .panel-body { padding: 8px 0; }
+  .panel-head { padding: 12px 14px; background: var(--teal-bg); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); gap: 4px; }
+  .panel-title { font-size: 13px; font-weight: 600; color: var(--teal-dk); }
+  .panel-meta { font-size: 10px; color: var(--muted); }
+  .panel-body { padding: 4px 0; }
 
   /* MINER ROWS */
   .miner-row {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 16px; border-bottom: 1px solid #F0F4F4; cursor: pointer; transition: background .15s;
+    padding: 12px 14px; border-bottom: 1px solid #F0F4F4; cursor: pointer; transition: background .15s;
   }
   .miner-row:last-child { border-bottom: none; }
   .miner-row:hover { background: var(--off-wh); }
-  .miner-row.selected { background: var(--teal-bg); }
-  .miner-info { display: flex; align-items: center; gap: 12px; }
+  .miner-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
   .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--teal); color: white; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .miner-name { font-size: 13px; font-weight: 600; color: var(--text); }
-  .miner-loc { font-size: 11px; color: var(--muted); }
-  .miner-right { display: flex; align-items: center; gap: 14px; }
-  .vitals { display: flex; gap: 14px; }
-  .vital { text-align: center; min-width: 40px; }
-  .vital-val { font-size: 13px; font-weight: 600; color: var(--text); }
+  .miner-name { font-size: 13px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .miner-loc { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .miner-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .vitals { display: flex; gap: 10px; }
+  .vital { text-align: center; min-width: 36px; }
+  .vital-val { font-size: 12px; font-weight: 600; color: var(--text); }
   .vital-key { font-size: 9px; color: var(--muted); font-weight: 600; }
   .vital-val.bad { color: var(--red); }
-  .pill { font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 700; white-space: nowrap; text-transform: uppercase; }
+  .pill { font-size: 9px; padding: 3px 8px; border-radius: 20px; font-weight: 700; white-space: nowrap; text-transform: uppercase; }
   .pill-ok { background: var(--teal-bg); color: var(--teal-dk); }
   .pill-warn { background: #FFFBEB; color: #854F0B; }
   .pill-alert { background: #FFEBEE; color: #B71C1C; }
 
   /* ALERTS LAYER */
-  .alert-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #F0F4F4; }
+  .alert-row { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-bottom: 1px solid #F0F4F4; }
   .alert-row:last-child { border-bottom: none; }
   .alert-icon { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 10px; font-weight: bold; }
   .alert-icon.red { background: #FFEBEE; color: var(--red); border: 1px solid rgba(229,57,53,0.2); }
   .alert-icon.amber { background: #FFFBEB; color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
   .alert-icon.green { background: var(--teal-bg); color: var(--teal); border: 1px solid rgba(14,148,136,0.2); }
   .alert-text { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.4; }
-  .alert-time { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .alert-time { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+  .alerts-page-row { display: flex; align-items: flex-start; gap: 12px; padding: 14px; background: white; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; }
+  .alert-sev { font-size: 9px; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; font-weight: 700; }
+  .alert-sev.critical { background: #FFEBEE; color: var(--red); }
+  .alert-sev.warning { background: #FFFBEB; color: var(--amber); }
 
   /* GAUGE BARS */
-  .gauge-section { padding: 12px 16px; display: flex; flex-direction: column; gap: 12px; }
-  .gauge-item { display: flex; align-items: center; gap: 12px; }
-  .gauge-label { font-size: 12px; color: var(--muted); width: 80px; flex-shrink: 0; font-weight: 500; }
+  .gauge-section { padding: 12px 14px; display: flex; flex-direction: column; gap: 12px; }
+  .gauge-item { display: flex; align-items: center; gap: 10px; }
+  .gauge-label { font-size: 11px; color: var(--muted); width: 75px; flex-shrink: 0; font-weight: 500; }
   .gauge-track { flex: 1; height: 8px; background: var(--teal-bg); border-radius: 4px; overflow: hidden; }
   .gauge-fill { height: 100%; border-radius: 4px; transition: width .6s ease; }
-  .gauge-val { font-size: 12px; font-weight: 600; color: var(--text); width: 45px; text-align: right; }
+  .gauge-val { font-size: 11px; font-weight: 600; color: var(--text); width: 40px; text-align: right; }
 
-  .right-col { display: flex; flex-direction: column; gap: 16px; }
+  .right-col { display: flex; flex-direction: column; gap: 14px; }
 
   /* FOOTER */
-  .footer { background: var(--teal-dk); color: var(--teal-lt); font-size: 11px; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+  .footer { background: var(--teal-dk); color: var(--teal-lt); font-size: 10px; padding: 10px 16px; display: flex; flex-direction: column; gap: 6px; text-align: center; flex-shrink: 0; }
+  @media (min-width: 576px) {
+    .footer { flex-direction: row; justify-content: space-between; text-align: left; }
+  }
 
-  /* ALL MINERS TAB GRID */
-  .miners-table { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
-  .miners-table-head { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr 1fr; gap: 0; padding: 12px 16px; background: var(--teal-bg); border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 700; color: var(--teal-dk); text-transform: uppercase; letter-spacing: 0.5px; }
-  .miners-table-row { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr 1fr; gap: 0; padding: 12px 16px; border-bottom: 1px solid #F0F4F4; font-size: 13px; align-items: center; transition: background .1s; cursor: pointer; }
+  /* ALL MINERS TABLE SCROLL CONTAINER */
+  .miners-table-container { width: 100%; overflow-x: auto; background: var(--white); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); }
+  .miners-table { min-width: 600px; }
+  .miners-table-head { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr 1fr; padding: 12px 16px; background: var(--teal-bg); border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 700; color: var(--teal-dk); text-transform: uppercase; letter-spacing: 0.5px; }
+  .miners-table-row { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr 1fr; padding: 12px 16px; border-bottom: 1px solid #F0F4F4; font-size: 13px; align-items: center; transition: background .1s; cursor: pointer; }
   .miners-table-row:last-child { border-bottom: none; }
   .miners-table-row:hover { background: var(--off-wh); }
 
   /* SYSTEM REPORTS SETUP */
-  .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
-  .report-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow); }
+  @media (min-width: 576px) {
+    .report-card { padding: 20px; margin-bottom: 16px; }
+  }
+  .report-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
   .report-meta { font-size: 11px; color: var(--muted); margin-bottom: 14px; }
-  .report-stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 14px; }
+  .report-stat-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
+  @media (min-width: 576px) {
+    .report-stat-row { grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px; }
+  }
   .report-stat { background: var(--off-wh); border-radius: 8px; padding: 12px; border: 1px solid #E0F2F1; }
-  .report-stat-v { font-size: 22px; font-weight: 700; color: var(--teal); }
-  .report-stat-l { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 500; }
+  .report-stat-v { font-size: 20px; font-weight: 700; color: var(--teal); }
+  .report-stat-l { font-size: 11px; color: var(--muted); margin-top: 2px; font-weight: 500; }
+  .report-btn-group { display: flex; flex-direction: column; gap: 8px; }
+  @media (min-width: 480px) {
+    .report-btn-group { flex-direction: row; }
+  }
   
   /* ACTION BUTTON LAYOUTS */
-  .btn { padding: 10px 20px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: background 0.2s; }
+  .btn { padding: 12px 18px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: background 0.2s; text-align: center; }
+  @media (min-width: 576px) {
+    .btn { padding: 10px 20px; }
+  }
   .btn-primary { background: var(--teal); color: white; }
   .btn-primary:hover { background: var(--teal-dk); }
   .btn-outline { background: white; color: var(--teal); border: 1px solid var(--teal); }
@@ -218,33 +289,39 @@
   .btn-danger:hover { background: #C62828; }
 
   /* CONFIG SECTION SETTINGS */
-  .settings-section { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
-  .settings-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; color: var(--teal-dk); }
-  .setting-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #F0F4F4; }
+  .settings-section { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow); }
+  @media (min-width: 576px) {
+    .settings-section { padding: 20px; margin-bottom: 16px; }
+  }
+  .settings-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--teal-dk); }
+  .setting-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #F0F4F4; gap: 10px; }
   .setting-row:last-child { border-bottom: none; }
-  .setting-label { font-size: 13px; font-weight: 600; }
+  .setting-label { font-size: 12px; font-weight: 600; }
+  @media (min-width: 400px) { .setting-label { font-size: 13px; } }
   .setting-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
   .toggle { width: 40px; height: 22px; border-radius: 11px; background: var(--border); position: relative; cursor: pointer; transition: background .2s; flex-shrink: 0; }
   .toggle.on { background: var(--teal); }
   .toggle-thumb { width: 18px; height: 18px; border-radius: 50%; background: white; position: absolute; top: 2px; left: 2px; transition: left .2s; }
   .toggle.on .toggle-thumb { left: 20px; }
-  .threshold-input { display: flex; align-items: center; gap: 8px; }
-  .threshold-input input { width: 60px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; text-align: center; font-family: inherit; }
+  .threshold-input { display: flex; align-items: center; gap: 6px; }
+  .threshold-input input { width: 55px; padding: 6px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; text-align: center; font-family: inherit; }
   .threshold-input span { font-size: 11px; color: var(--muted); font-weight: 600; }
 
   /* MODAL */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 100; align-items: center; justify-content: center; }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 100; align-items: center; justify-content: center; padding: 16px; }
   .modal-overlay.open { display: flex; }
-  .modal { background: white; border-radius: 14px; padding: 24px; width: 440px; border: 1px solid var(--border); box-shadow: var(--shadow-md); }
-  .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-  .modal-title { font-size: 16px; font-weight: 600; }
-  .modal-close { cursor: pointer; font-size: 18px; color: var(--muted); background: none; border: none; }
-  .miner-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-  .detail-stat { background: var(--off-wh); border-radius: 8px; padding: 12px; border: 1px solid #E0F2F1; }
-  .detail-val { font-size: 22px; font-weight: 700; color: var(--teal); }
-  .detail-label { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 500; }
+  .modal { background: white; border-radius: 14px; padding: 20px; width: 100%; max-width: 440px; border: 1px solid var(--border); box-shadow: var(--shadow-md); max-height: 90vh; overflow-y: auto; }
+  .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .modal-title { font-size: 15px; font-weight: 600; padding-right: 8px; }
+  .modal-close { cursor: pointer; font-size: 18px; color: var(--muted); background: none; border: none; padding: 4px 8px; }
+  .miner-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .detail-stat { background: var(--off-wh); border-radius: 8px; padding: 10px; border: 1px solid #E0F2F1; }
+  .detail-val { font-size: 18px; font-weight: 700; color: var(--teal); }
+  .detail-label { font-size: 11px; color: var(--muted); margin-top: 2px; font-weight: 500; }
   .detail-val.red { color: var(--red); }
   .detail-val.amber { color: var(--amber); }
+  .modal-actions { display: flex; flex-direction: column; gap: 8px; }
+  @media (min-width: 400px) { .modal-actions { flex-direction: row; } .modal-actions button { flex: 1; } }
 </style>
 </head>
 <body>
@@ -252,7 +329,7 @@
 <!-- GLOBAL SYSTEM DISPATCH SOS HEADERBAR -->
 <div id="system-sos-bar">
   <div id="system-sos-text">CRITICAL ALERT: High Risk Personnel Detected on Shift</div>
-  <button class="btn btn-outline" style="color: white; border-color: white; background: transparent; padding: 4px 12px;" onclick="broadcastSystemSos()">Dispatch Emergency Team</button>
+  <button class="btn btn-outline" style="color: white; border-color: white; background: transparent; padding: 6px 14px; width:100%; max-width:240px;" onclick="broadcastSystemSos()">Dispatch Emergency Team</button>
 </div>
 
 <!-- LOGIN SCREEN -->
@@ -294,16 +371,15 @@
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="topbar-left">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(178,223,219,.8)"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l6 2.67V11c0 3.78-2.57 7.3-6 8.43C8.57 18.3 6 14.78 6 11V7.67L12 5z"/></svg>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(178,223,219,.8)"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l6 2.67V11c0 3.78-2.57 7.3-6 8.43C8.57 18.3 6 14.78 6 11V7.67L12 5z"/></svg>
       <span class="topbar-logo">SentinelWear</span>
-      <span class="topbar-mine">CIL - BCCL Mine 4</span>
+      <span class="topbar-mine">BCCL Mine 4</span>
     </div>
     <div class="topbar-right">
       <span><span class="live-dot"></span>Live</span>
       <span class="shift-badge" id="shift-time">Shift 2 . 00:00</span>
       <div class="topbar-user">
         <div class="topbar-avatar">AD</div>
-        <span>Admin</span>
       </div>
       <button class="logout-btn" onclick="doLogout()">Sign out</button>
     </div>
@@ -321,7 +397,7 @@
       </div>
       <div class="nav-item" onclick="showPage('miners',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        All miners
+        Miners
       </div>
       <div class="nav-item" onclick="showPage('alerts',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -331,7 +407,7 @@
       <div class="nav-section">REPORTS</div>
       <div class="nav-item" onclick="showPage('reports',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        Shift report
+        Reports
       </div>
       <div class="nav-item" onclick="showPage('settings',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
@@ -344,10 +420,8 @@
 
       <!-- SUIT HARDWARE SIMULATOR LAYER -->
       <div class="simulator-panel">
-        <div><strong>Hardware Suit Terminal Simulation Panel</strong> (Triggers real-time sensor metric changes across the workspace)</div>
-        <div>
-          <button class="btn btn-danger" onclick="triggerMinerHardwareSosButton()">Press Miner Suit SOS Button</button>
-        </div>
+        <div><strong>Suit Hardware Simulation Terminal</strong> (Simulates real-time hardware status changes)</div>
+        <button class="btn btn-danger" onclick="triggerMinerHardwareSosButton()">Trigger Suit SOS Button</button>
       </div>
 
       <!-- DASHBOARD PAGE DISPLAY VIEW -->
@@ -356,22 +430,22 @@
           <div class="stat">
             <div class="stat-label">Miners on shift</div>
             <div class="stat-val" id="s-active">24</div>
-            <div class="stat-sub">of 24 jackets connected</div>
+            <div class="stat-sub">24 connected</div>
           </div>
           <div class="stat">
             <div class="stat-label">Active alerts</div>
             <div class="stat-val" id="s-alerts">0</div>
-            <div class="stat-sub" id="s-alerts-sub">0 critical . 0 warning</div>
+            <div class="stat-sub" id="s-alerts-sub">0 crit . 0 warn</div>
           </div>
           <div class="stat">
             <div class="stat-label">Avg CO level</div>
             <div class="stat-val" id="s-co">12 ppm</div>
-            <div class="stat-sub">Limit: 25 ppm</div>
+            <div class="stat-sub">Max: 25 ppm</div>
           </div>
           <div class="stat">
             <div class="stat-label">AI risk score</div>
-            <div class="stat-val" id="s-risk" style="color: var(--green);">Normal</div>
-            <div class="stat-sub">Updated just now</div>
+            <div class="stat-val" id="s-risk" style="color: var(--green); font-size:16px; padding-top:4px;">Normal</div>
+            <div class="stat-sub">Live check</div>
           </div>
         </div>
 
@@ -380,7 +454,7 @@
           <div class="panel">
             <div class="panel-head">
               <span class="panel-title">Miner status overview</span>
-              <span class="panel-meta">Live . click row for supervisor console actions</span>
+              <span class="panel-meta">Tap row for console actions</span>
             </div>
             <div class="panel-body" id="miner-list"></div>
           </div>
@@ -399,7 +473,7 @@
             <div class="panel">
               <div class="panel-head">
                 <span class="panel-title">Mine environment sensors</span>
-                <span class="panel-meta" id="env-time">Avg . updating...</span>
+                <span class="panel-meta" id="env-time">Updating...</span>
               </div>
               <div class="gauge-section" id="gauge-list"></div>
             </div>
@@ -409,11 +483,13 @@
 
       <!-- ALL MINERS DATA VIEW CONTAINER -->
       <div class="page" id="page-miners">
-        <div class="miners-table">
-          <div class="miners-table-head">
-            <span>Miner</span><span>Location</span><span>Heart rate</span><span>SpO2</span><span>CO exp.</span><span>Status</span>
+        <div class="miners-table-container">
+          <div class="miners-table">
+            <div class="miners-table-head">
+              <span>Miner</span><span>Location</span><span>Heart rate</span><span>SpO2</span><span>CO exp.</span><span>Status</span>
+            </div>
+            <div id="miners-full-list"></div>
           </div>
-          <div id="miners-full-list"></div>
         </div>
       </div>
 
@@ -426,25 +502,25 @@
       <div class="page" id="page-reports">
         <div class="report-card">
           <div class="report-title">Shift 2 Summary - <span id="report-date"></span></div>
-          <div class="report-meta">BCCL Mine 4 . Generated automatically . DGMS standard layout compliance</div>
+          <div class="report-meta">BCCL Mine 4 . DGMS layout compliance automated data</div>
           <div class="report-stat-row">
-            <div class="report-stat"><div class="report-stat-v">24</div><div class="report-stat-l">Miners on shift</div></div>
-            <div class="report-stat"><div class="report-stat-v" id="rep-alert-v" style="color:var(--text)">0</div><div class="report-stat-l">Alerts triggered</div></div>
-            <div class="report-stat"><div class="report-stat-v">0</div><div class="report-stat-l">Incidents reported</div></div>
+            <div class="report-stat"><div class="report-stat-v">24</div><div class="report-stat-l">Miners Active</div></div>
+            <div class="report-stat"><div class="report-stat-v" id="rep-alert-v" style="color:var(--text)">0</div><div class="report-stat-l">Alerts Filed</div></div>
+            <div class="report-stat"><div class="report-stat-v">0</div><div class="report-stat-l">Incidents</div></div>
           </div>
           <div class="report-stat-row">
-            <div class="report-stat"><div class="report-stat-v">12 ppm</div><div class="report-stat-l">Peak CO reading</div></div>
-            <div class="report-stat"><div class="report-stat-v">30 C</div><div class="report-stat-l">Max temperature</div></div>
-            <div class="report-stat"><div class="report-stat-v">100%</div><div class="report-stat-l">Jacket uptime</div></div>
+            <div class="report-stat"><div class="report-stat-v">12 ppm</div><div class="report-stat-l">Peak CO Gas</div></div>
+            <div class="report-stat"><div class="report-stat-v">30 C</div><div class="report-stat-l">Max Temp</div></div>
+            <div class="report-stat"><div class="report-stat-v">100%</div><div class="report-stat-l">Suit Uptime</div></div>
           </div>
-          <div style="display:flex;gap:8px">
-            <button class="btn btn-primary" onclick="alert('Downloading DGMS format PDF report...')">Download PDF report</button>
-            <button class="btn btn-outline" onclick="alert('Sending report to DGMS portal...')">Submit to DGMS portal</button>
+          <div class="report-btn-group">
+            <button class="btn btn-primary" onclick="alert('Downloading DGMS format PDF report...')">Download PDF</button>
+            <button class="btn btn-outline" onclick="alert('Sending report to DGMS portal...')">Submit to DGMS Portal</button>
           </div>
         </div>
         <div class="report-card">
           <div class="report-title">Alert log - Shift 2</div>
-          <div class="report-meta">All threshold breaches recorded this shift</div>
+          <div class="report-meta">Recorded safety threshold breaches</div>
           <div id="report-alerts"></div>
         </div>
       </div>
@@ -454,53 +530,33 @@
         <div class="settings-section">
           <div class="settings-title">Alert thresholds</div>
           <div class="setting-row">
-            <div><div class="setting-label">CO carbon monoxide limit</div><div class="setting-desc">Alert fires above this value</div></div>
+            <div><div class="setting-label">CO limit</div><div class="setting-desc">Alert point gas level</div></div>
             <div class="threshold-input"><input type="number" value="25" id="t-co"><span>ppm</span></div>
           </div>
           <div class="setting-row">
-            <div><div class="setting-label">Heart rate upper limit</div><div class="setting-desc">Flag if BPM exceeds</div></div>
+            <div><div class="setting-label">Heart rate limit</div><div class="setting-desc">Upper BPM ceiling</div></div>
             <div class="threshold-input"><input type="number" value="100" id="t-bpm"><span>BPM</span></div>
           </div>
           <div class="setting-row">
-            <div><div class="setting-label">Temperature limit</div><div class="setting-desc">Heat stress warning threshold</div></div>
+            <div><div class="setting-label">Temperature limit</div><div class="setting-desc">Heat stress metric</div></div>
             <div class="threshold-input"><input type="number" value="37" id="t-temp"><span>C</span></div>
           </div>
           <div class="setting-row">
-            <div><div class="setting-label">SpO2 lower limit</div><div class="setting-desc">Medical alert below this value</div></div>
+            <div><div class="setting-label">SpO2 lower limit</div><div class="setting-desc">Hypoxia safety bounds</div></div>
             <div class="threshold-input"><input type="number" value="90" id="t-spo2"><span>%</span></div>
           </div>
-          <div style="margin-top:14px"><button class="btn btn-primary" onclick="alert('Thresholds saved and pushed to all 24 jackets.')">Save thresholds</button></div>
+          <div style="margin-top:14px"><button class="btn btn-primary" style="width:100%" onclick="alert('Thresholds saved and pushed to all 24 jackets.')">Save Thresholds</button></div>
         </div>
         <div class="settings-section">
-          <div class="settings-title">Notifications Configuration</div>
+          <div class="settings-title">Notifications Settings</div>
           <div class="setting-row">
-            <div><div class="setting-label">SMS alerts on threshold breach</div><div class="setting-desc">Auto SMS to registered supervisor number</div></div>
+            <div><div class="setting-label">SMS Alerts</div><div class="setting-desc">Instant text dispatch to safety room</div></div>
             <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></div>
           </div>
           <div class="setting-row">
-            <div><div class="setting-label">Fall detection SOS link</div><div class="setting-desc">Immediate SMS on fall detected and no motion matches</div></div>
+            <div><div class="setting-label">Fall Detection SOS Link</div><div class="setting-desc">Automated accelerometer check logs</div></div>
             <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></div>
           </div>
-          <div class="setting-row">
-            <div><div class="setting-label">Daily DGMS report email automated line</div><div class="setting-desc">Auto generate and email shift summary records</div></div>
-            <div class="toggle" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></div>
-          </div>
-          <div class="setting-row">
-            <div><div class="setting-label">AI risk score notifications</div><div class="setting-desc">Alert when any miner risk score changes to High</div></div>
-            <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></div>
-          </div>
-        </div>
-        <div class="settings-section">
-          <div class="settings-title">Mine configuration layout</div>
-          <div class="setting-row">
-            <div><div class="setting-label">Mine name allocation</div></div>
-            <input type="text" value="BCCL Mine 4" style="width:200px;padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit">
-          </div>
-          <div class="setting-row">
-            <div><div class="setting-label">Supervisor dispatcher phone line</div></div>
-            <input type="text" value="+91 98XXX XXXXX" style="width:200px;padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit">
-          </div>
-          <div style="margin-top:14px"><button class="btn btn-primary" onclick="alert('Configuration saved.')">Save configuration</button></div>
         </div>
       </div>
 
@@ -511,9 +567,9 @@
   <div class="footer">
     <span>
       <svg style="width:11px;height:11px;vertical-align:-1px;margin-right:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 6s4-2 11-2 11 2 11 2"/><path d="M1 12s4-2 11-2 11 2 11 2"/><path d="M1 18s4-2 11-2 11 2 11 2"/></svg>
-      LoRa mesh net . 24/24 jackets connected . Last synchronization check: <span id="sync-time">4s ago</span>
+      LoRa Mesh Network . Connected: <span id="sync-time">4s ago</span>
     </span>
-    <span>SentinelWear v1.0 . BCCL Mine 4 . Shift 2</span>
+    <span>SentinelWear v1.0 . Shift 2</span>
   </div>
 </div>
 
@@ -521,15 +577,15 @@
 <div class="modal-overlay" id="miner-modal">
   <div class="modal">
     <div class="modal-head">
-      <div class="modal-title" id="modal-name">Miner detail data logs</div>
-      <button class="modal-close" onclick="closeModal()">X</button>
+      <div class="modal-title" id="modal-name">Miner details</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div id="modal-content"></div>
   </div>
 </div>
 
 <script>
-// Data Storage Matrices (Refreshed completely to normal 'ok' status on startup)
+// Data Storage Matrices
 const MINERS = [
   { id:'RK', name:'Ramesh Kumar',  loc:'Tunnel B . 220m', bpm:78,  spo2:97, co:14, temp:30, status:'ok' },
   { id:'SM', name:'Suresh Mahato', loc:'Tunnel A . 185m', bpm:75,  spo2:98, co:12, temp:32, status:'ok' },
@@ -554,7 +610,6 @@ const pillClass = s => s==='ok'?'pill-ok':s==='warn'?'pill-warn':'pill-alert';
 const pillText  = s => s==='ok'?'Safe':s==='warn'?'Watch':'Alert';
 const avatarColor = s => s==='alert'?'#E53935':s==='warn'?'#F59E0B':'#0E9488';
 
-// Evaluate System State and control high risk bar display elements
 function evaluateMinersRiskForAdminSos() {
   const hasHighRiskMiner = MINERS.some(m => m.status === 'alert');
   const sosBar = document.getElementById('system-sos-bar');
@@ -563,7 +618,7 @@ function evaluateMinersRiskForAdminSos() {
   if (hasHighRiskMiner) {
     sosBar.style.display = 'flex';
     if (riskValue) {
-      riskValue.textContent = 'High Risk Flag';
+      riskValue.textContent = 'High Risk';
       riskValue.style.color = 'var(--red)';
     }
   } else {
@@ -576,42 +631,32 @@ function evaluateMinersRiskForAdminSos() {
 }
 
 function broadcastSystemSos() {
-  alert('ADMIN DISPATCH ACTION: Broad spectrum SOS emergency broadcast transmitted across all tunnels. Special rescue units mobilized.');
+  alert('ADMIN DISPATCH ACTION: Emergency response team deployed to site telemetry zones.');
 }
 
-// Action Trigger: Manual SOS button pressed inside modal dashboard view
 function executeManualSosOverride(id) {
   const m = MINERS.find(x => x.id === id);
   if (!m) return;
 
-  // Mutate state logic directly within central data reference 
   m.status = 'alert';
   m.bpm = 115;
   m.co = 26;
 
-  // Append new event log card entry dynamically
   ALERTS.unshift({
     type: 'red',
     icon: 'SOS',
-    text: 'MANUAL CONSOLE SOS FORCE - ' + m.name + ' from ' + m.loc,
+    text: 'MANUAL OVERRIDE - ' + m.name,
     time: 'Just Now',
-    sub: 'Emergency state forced manually via administrative console control layout.'
+    sub: 'Console forced emergency activation.'
   });
 
-  // Synchronize component trees and update main screens instantly
   syncGlobalUIRenderers();
-  
-  // Rerender active modal layout views to match the updated states
   openModal(id);
-
-  alert('Administrative Manual SOS Override issued for ' + m.name + '. Main screen tracking elements synchronized.');
 }
 
-// Action Trigger: Simulation hardware button clicked
 function triggerMinerHardwareSosButton() {
   const randomMiner = MINERS[Math.floor(Math.random() * MINERS.length)];
   
-  // Mutate state records matching selected miner ID
   randomMiner.status = 'alert';
   randomMiner.bpm = 122;
   randomMiner.co = 28;
@@ -619,23 +664,21 @@ function triggerMinerHardwareSosButton() {
   ALERTS.unshift({
     type: 'red',
     icon: 'SOS',
-    text: 'HARDWARE SOS AXIS TRIGGERED - ' + randomMiner.name + ' from ' + randomMiner.loc,
+    text: 'SUIT HARDWARE SOS - ' + randomMiner.name,
     time: 'Just Now',
-    sub: 'Suit emergency sensor pulse caught by local gateway mesh.'
+    sub: 'Jacket hardware button trigger.'
   });
 
   syncGlobalUIRenderers();
 
-  // If the detail popup modal for this specific worker is already open on screen, refresh its layouts
   const modalOverlay = document.getElementById('miner-modal');
   if (modalOverlay.classList.contains('open')) {
     openModal(randomMiner.id);
   }
 
-  alert('WEARABLE EVENT LOG: Device ID ' + randomMiner.id + ' (' + randomMiner.name + ') held physical suit button. Status mutated to alert on main console.');
+  alert('WEARABLE EVENT: ' + randomMiner.name + ' pressed physical suit SOS button.');
 }
 
-// Helper utility to sync and push array state values down to UI components
 function syncGlobalUIRenderers() {
   document.getElementById('alert-count').textContent = ALERTS.length;
   
@@ -643,7 +686,7 @@ function syncGlobalUIRenderers() {
   const warningSummaryCount = MINERS.filter(m => m.status === 'warn').length;
   
   document.getElementById('s-alerts').textContent = alertSummaryCount + warningSummaryCount;
-  document.getElementById('s-alerts-sub').textContent = alertSummaryCount + ' critical . ' + warningSummaryCount + ' warning';
+  document.getElementById('s-alerts-sub').textContent = alertSummaryCount + ' crit . ' + warningSummaryCount + ' warn';
   
   const reportAlertVal = document.getElementById('rep-alert-v');
   if (reportAlertVal) {
@@ -657,12 +700,11 @@ function syncGlobalUIRenderers() {
 }
 
 function renderDashboard() {
-  // Render main screen dashboard summary table grid rows
   document.getElementById('miner-list').innerHTML = MINERS.slice(0,5).map(m => `
     <div class="miner-row" onclick="openModal('${m.id}')">
       <div class="miner-info">
         <div class="avatar" style="background:${avatarColor(m.status)}">${m.id}</div>
-        <div><div class="miner-name">${m.name}</div><div class="miner-loc">${m.loc}</div></div>
+        <div style="min-width:0;"><div class="miner-name">${m.name}</div><div class="miner-loc">${m.loc}</div></div>
       </div>
       <div class="miner-right">
         <div class="vitals">
@@ -673,16 +715,14 @@ function renderDashboard() {
       </div>
     </div>`).join('');
 
-  // Render recent live alert component tracking logs
   document.getElementById('alert-list').innerHTML = ALERTS.length === 0 ? 
-    `<div style="padding:16px;text-align:center;font-size:12px;color:var(--muted)">No active safety alerts logs listed this shift</div>` :
+    `<div style="padding:16px;text-align:center;font-size:12px;color:var(--muted)">No safety alerts logs this shift</div>` :
     ALERTS.map(a => `
     <div class="alert-row">
       <div class="alert-icon ${a.type}"><span style="font-size:10px">${a.icon}</span></div>
       <div><div class="alert-text">${a.text}</div><div class="alert-time">${a.time} . ${a.sub}</div></div>
     </div>`).join('');
 
-  // Render gauge bar frameworks
   document.getElementById('gauge-list').innerHTML = GAUGES.map(g => `
     <div class="gauge-item">
       <span class="gauge-label">${g.label}</span>
@@ -701,7 +741,7 @@ function renderAllMiners() {
         <div><div class="miner-name" style="font-size:12px">${m.name}</div></div>
       </div>
       <span style="color:var(--muted)">${m.loc}</span>
-      <span class="${m.bpm>100?'':''}"><b style="color:${m.bpm>100?'var(--red)':'var(--text)'}">${m.bpm}</b> BPM</span>
+      <span><b style="color:${m.bpm>100?'var(--red)':'var(--text)'}">${m.bpm}</b> BPM</span>
       <span>${m.spo2}%</span>
       <span style="color:${m.co>20?'var(--amber)':'var(--text)'}">${m.co} ppm</span>
       <span class="pill ${pillClass(m.status)}">${pillText(m.status)}</span>
@@ -714,16 +754,16 @@ function renderAlerts() {
   const sev = t => t==='red'?'critical':t==='amber'?'warning':'resolved';
   
   if (ALERTS.length === 0) {
-    document.getElementById('alerts-full-list').innerHTML = `<div style="padding:24px;text-align:center;background:white;border-radius:12px;border:1px solid var(--border);font-size:13px;color:var(--muted)">All clear. No threshold metrics or alert violations currently recorded for this shift segment.</div>`;
-    document.getElementById('report-alerts').innerHTML = `<div style="padding:12px 0;font-size:12px;color:var(--muted)">Zero environmental threshold exceptions filed.</div>`;
+    document.getElementById('alerts-full-list').innerHTML = `<div style="padding:24px;text-align:center;background:white;border-radius:12px;border:1px solid var(--border);font-size:13px;color:var(--muted)">All clear. No safety threshold logs.</div>`;
+    document.getElementById('report-alerts').innerHTML = `<div style="padding:12px 0;font-size:12px;color:var(--muted)">Zero environment exceptions logs.</div>`;
     return;
   }
 
   document.getElementById('alerts-full-list').innerHTML = ALERTS.map(a => `
     <div class="alerts-page-row">
-      <div class="alert-icon ${a.type}" style="width:40px;height:32px"><span style="font-size:10px">${a.icon}</span></div>
-      <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+      <div class="alert-icon ${a.type}" style="width:36px;height:32px;margin-right:4px;"><span style="font-size:10px">${a.icon}</span></div>
+      <div style="flex:1; min-width:0;">
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:3px">
           <span style="font-size:13px;font-weight:600">${a.text}</span>
           <span class="alert-sev ${sev(a.type)}">${sev(a.type)}</span>
         </div>
@@ -742,21 +782,22 @@ function openModal(id) {
   const m = MINERS.find(x => x.id===id);
   if (!m) return;
   
-  document.getElementById('modal-name').textContent = m.name + ' - ' + m.loc;
+  document.getElementById('modal-name').textContent = m.name + " (" + m.id + ")";
   document.getElementById('modal-content').innerHTML = `
+    <div style="font-size:12px; color:var(--muted); margin-bottom:12px;">Location: ${m.loc}</div>
     <div class="miner-detail-grid">
-      <div class="detail-stat"><div class="detail-val ${m.bpm>100?'red':''}">${m.bpm}</div><div class="detail-label">Heart rate (BPM)</div></div>
-      <div class="detail-stat"><div class="detail-val ${m.spo2<95?'amber':''}">${m.spo2}%</div><div class="detail-label">Blood oxygen (SpO2)</div></div>
-      <div class="detail-stat"><div class="detail-val ${m.co>20?'amber':''}">${m.co} ppm</div><div class="detail-label">CO exposure</div></div>
-      <div class="detail-stat"><div class="detail-val ${m.temp>33?'amber':''}">${m.temp} C</div><div class="detail-label">Temperature reading</div></div>
+      <div class="detail-stat"><div class="detail-val ${m.bpm>100?'red':''}">${m.bpm}</div><div class="detail-label">Pulse (BPM)</div></div>
+      <div class="detail-stat"><div class="detail-val ${m.spo2<95?'amber':''}">${m.spo2}%</div><div class="detail-label">Oxygen (SpO2)</div></div>
+      <div class="detail-stat"><div class="detail-val ${m.co>20?'amber':''}">${m.co} ppm</div><div class="detail-label">CO Level</div></div>
+      <div class="detail-stat"><div class="detail-val ${m.temp>33?'amber':''}">${m.temp}°C</div><div class="detail-label">Jacket Temp</div></div>
     </div>
     <div style="background:var(--off-wh);border-radius:8px;padding:12px;margin-bottom:14px;border: 1px solid #B2DFDB">
-      <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;font-weight:600">AI risk assessment matrix</div>
-      <div style="font-size:13px;font-weight:600;color:${m.status==='alert'?'var(--red)':m.status==='warn'?'var(--amber)':'var(--teal)'}">${m.status==='alert'?'High Risk Flag - Immediate system attention required':'Low Risk - All metrics normal'}</div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;font-weight:600">AI Safety Index</div>
+      <div style="font-size:12px;font-weight:600;color:${m.status==='alert'?'var(--red)':m.status==='warn'?'var(--amber)':'var(--teal)'}">${m.status==='alert'?'High Risk Flag - Immediate Attention':'Low Risk - Safe Monitoring Status'}</div>
     </div>
-    <div style="display:flex;gap:8px">
-      <button class="btn btn-danger" onclick="executeManualSosOverride('${m.id}')">Send SOS alert</button>
-      <button class="btn btn-outline" onclick="closeModal()">Close</button>
+    <div class="modal-actions">
+      <button class="btn btn-danger" onclick="executeManualSosOverride('${m.id}')">Force Dispatch Alert</button>
+      <button class="btn btn-outline" onclick="closeModal()">Close Console</button>
     </div>`;
   document.getElementById('miner-modal').classList.add('open');
 }
@@ -765,12 +806,14 @@ function closeModal() {
   document.getElementById('miner-modal').classList.remove('open');
 }
 
-// Handle viewport structural navigation transitions
 function showPage(name, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   el.classList.add('active');
+  
+  // Mobile UI enhancement auto-scalls the sub-nav menu bar horizontally on active selection click
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 }
 
 function doLogin() {
@@ -783,7 +826,6 @@ function doLogin() {
     document.getElementById('app').style.display='flex';
     document.getElementById('report-date').textContent = new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
     
-    // Clear alerts collection, initialize structural tables safely on launch
     syncGlobalUIRenderers();
     startClock();
   } else {
@@ -806,7 +848,7 @@ function startClock() {
     const now = new Date();
     const t = now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:false});
     document.getElementById('shift-time').textContent = 'Shift 2 . '+t;
-    document.getElementById('env-time').textContent = 'Avg . updated '+t;
+    document.getElementById('env-time').textContent = 'Live . '+t;
   }
   tick(); setInterval(tick, 10000);
 
