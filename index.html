@@ -655,20 +655,21 @@ function executeManualSosOverride(id) {
 }
 
 function triggerMinerHardwareSosButton() {
-  // Target Ravi Singh dynamically to test behavior, or default fallback to any miner
-  let targetIdx = MINERS.findIndex(m => m.id === 'RS');
-  if (targetIdx === -1) targetIdx = Math.floor(Math.random() * MINERS.length);
-  
+  // Select a completely random miner from the entire available pool
+  const targetIdx = Math.floor(Math.random() * MINERS.length);
   const targetMiner = MINERS[targetIdx];
+  
+  // Set emergency telemetry status values
   targetMiner.status = 'alert';
   targetMiner.bpm = 122;
   targetMiner.co = 28;
 
-  // CRITICAL UPDATE: Extract miner and push to the very top array layer 
-  // ensuring their record maps directly inside the slice(0,5) rendering stream.
+  // Extract the miner from their current position and move them 
+  // straight to index 0 so they immediately display on the dashboard table
   MINERS.splice(targetIdx, 1);
   MINERS.unshift(targetMiner);
 
+  // Add an entry to the top of the safety alert log queue
   ALERTS.unshift({
     type: 'red',
     icon: 'SOS',
@@ -677,8 +678,10 @@ function triggerMinerHardwareSosButton() {
     sub: 'Hardware link triggered.'
   });
 
+  // Push updates live across all tabs and data fields
   syncGlobalUIRenderers();
 
+  // If the detail console overlay happens to be open, refresh its stats
   const modalOverlay = document.getElementById('miner-modal');
   if (modalOverlay.classList.contains('open')) {
     openModal(targetMiner.id);
