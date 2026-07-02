@@ -115,7 +115,7 @@
     .body { flex-direction: row; }
   }
 
-  /* SIDEBAR (Responsive Nav Container) */
+  /* SIDEBAR */
   .sidebar { 
     width: 100%; background: var(--teal-dk); flex-shrink: 0; display: flex; 
     flex-direction: row; padding: 0; overflow-x: auto; overflow-y: hidden;
@@ -196,7 +196,7 @@
   .panel-meta { font-size: 10px; color: var(--muted); }
   .panel-body { padding: 4px 0; }
 
-  /* DASHBOARD TABLE HEADERS (New desktop layout) */
+  /* DASHBOARD TABLE HEADERS */
   .dashboard-table-header {
     display: none;
     grid-template-columns: 2fr 2fr 1.5fr 1fr;
@@ -226,7 +226,6 @@
   .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--teal); color: white; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .miner-name { font-size: 13px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   
-  /* Desktop layout explicitly maps location separate from the avatar cluster */
   .miner-dashboard-loc { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 2; display: none; }
   .miner-mobile-loc { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   
@@ -285,7 +284,7 @@
     .footer { flex-direction: row; justify-content: space-between; text-align: left; }
   }
 
-  /* ALL MINERS TABLE SCROLL CONTAINER */
+  /* ALL MINERS TABLE */
   .miners-table-container { width: 100%; overflow-x: auto; background: var(--white); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); }
   .miners-table { min-width: 600px; }
   .miners-table-head { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr 1fr; padding: 12px 16px; background: var(--teal-bg); border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 700; color: var(--teal-dk); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -293,7 +292,7 @@
   .miners-table-row:last-child { border-bottom: none; }
   .miners-table-row:hover { background: var(--off-wh); }
 
-  /* SYSTEM REPORTS SETUP */
+  /* REPORTS */
   .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow); }
   @media (min-width: 576px) {
     .report-card { padding: 20px; margin-bottom: 16px; }
@@ -312,7 +311,7 @@
     .report-btn-group { flex-direction: row; }
   }
   
-  /* ACTION BUTTON LAYOUTS */
+  /* ACTION BUTTONS */
   .btn { padding: 12px 18px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: background 0.2s; text-align: center; }
   @media (min-width: 576px) {
     .btn { padding: 10px 20px; }
@@ -324,7 +323,7 @@
   .btn-danger { background: var(--red); color: white; }
   .btn-danger:hover { background: #C62828; }
 
-  /* CONFIG SECTION SETTINGS */
+  /* CONFIG */
   .settings-section { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow); }
   @media (min-width: 576px) {
     .settings-section { padding: 20px; margin-bottom: 16px; }
@@ -455,7 +454,7 @@
 
       <!-- SUIT HARDWARE SIMULATOR LAYER -->
       <div class="simulator-panel">
-        <div><strong>Suit Hardware Simulation Terminal</strong> (Simulates real-time hardware status changes)</div>
+        <div><strong>Suit Hardware Simulation Terminal</strong> (Triggers an SOS from a hidden shift miner like Ravi Singh)</div>
         <button class="btn btn-danger" onclick="triggerMinerHardwareSosButton()">Trigger Suit SOS Button</button>
       </div>
 
@@ -485,13 +484,11 @@
         </div>
 
         <div class="panels">
-          <!-- Miner statuses table setup -->
           <div class="panel">
             <div class="panel-head">
               <span class="panel-title">Miner status overview</span>
-              <span class="panel-meta">Tap row for console actions</span>
+              <span class="panel-meta">Showing top active links</span>
             </div>
-            <!-- Added table layout structural elements explicitly for location layout column mapping -->
             <div class="dashboard-table-header">
               <span>Miner</span><span>Location</span><span>Telemetry</span><span style="text-align: right;">Status</span>
             </div>
@@ -499,7 +496,6 @@
           </div>
 
           <div class="right-col">
-            <!-- Alert listings log block -->
             <div class="panel">
               <div class="panel-head">
                 <span class="panel-title">Recent safety alerts</span>
@@ -508,7 +504,6 @@
               <div class="panel-body" id="alert-list"></div>
             </div>
 
-            <!-- Environmental gauges module -->
             <div class="panel">
               <div class="panel-head">
                 <span class="panel-title">Mine environment sensors</span>
@@ -547,19 +542,12 @@
             <div class="report-stat"><div class="report-stat-v" id="rep-alert-v" style="color:var(--text)">0</div><div class="report-stat-l">Alerts Filed</div></div>
             <div class="report-stat"><div class="report-stat-v">0</div><div class="report-stat-l">Incidents</div></div>
           </div>
-          <div class="report-stat-row">
-            <div class="report-stat"><div class="report-stat-v">12 ppm</div><div class="report-stat-l">Peak CO Gas</div></div>
-            <div class="report-stat"><div class="report-stat-v">30 C</div><div class="report-stat-l">Max Temp</div></div>
-            <div class="report-stat"><div class="report-stat-v">100%</div><div class="report-stat-l">Suit Uptime</div></div>
-          </div>
           <div class="report-btn-group">
             <button class="btn btn-primary" onclick="alert('Downloading DGMS format PDF report...')">Download PDF</button>
-            <button class="btn btn-outline" onclick="alert('Sending report to DGMS portal...')">Submit to DGMS Portal</button>
           </div>
         </div>
         <div class="report-card">
           <div class="report-title">Alert log - Shift 2</div>
-          <div class="report-meta">Recorded safety threshold breaches</div>
           <div id="report-alerts"></div>
         </div>
       </div>
@@ -572,30 +560,6 @@
             <div><div class="setting-label">CO limit</div><div class="setting-desc">Alert point gas level</div></div>
             <div class="threshold-input"><input type="number" value="25" id="t-co"><span>ppm</span></div>
           </div>
-          <div class="setting-row">
-            <div><div class="setting-label">Heart rate limit</div><div class="setting-desc">Upper BPM ceiling</div></div>
-            <div class="threshold-input"><input type="number" value="100" id="t-bpm"><span>BPM</span></div>
-          </div>
-          <div class="setting-row">
-            <div><div class="setting-label">Temperature limit</div><div class="setting-desc">Heat stress metric</div></div>
-            <div class="threshold-input"><input type="number" value="37" id="t-temp"><span>C</span></div>
-          </div>
-          <div class="setting-row">
-            <div><div class="setting-label">SpO2 lower limit</div><div class="setting-desc">Hypoxia safety bounds</div></div>
-            <div class="threshold-input"><input type="number" value="90" id="t-spo2"><span>%</span></div>
-          </div>
-          <div style="margin-top:14px"><button class="btn btn-primary" style="width:100%" onclick="alert('Thresholds saved and pushed to all 24 jackets.')">Save Thresholds</button></div>
-        </div>
-        <div class="settings-section">
-          <div class="settings-title">Notifications Settings</div>
-          <div class="setting-row">
-            <div><div class="setting-label">SMS Alerts</div><div class="setting-desc">Instant text dispatch to safety room</div></div>
-            <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></div>
-          </div>
-          <div class="setting-row">
-            <div><div class="setting-label">Fall Detection SOS Link</div><div class="setting-desc">Automated accelerometer check logs</div></div>
-            <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></div>
-          </div>
         </div>
       </div>
 
@@ -604,10 +568,7 @@
 
   <!-- APPLICATION COMPONENT FOOTER -->
   <div class="footer">
-    <span>
-      <svg style="width:11px;height:11px;vertical-align:-1px;margin-right:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 6s4-2 11-2 11 2 11 2"/><path d="M1 12s4-2 11-2 11 2 11 2"/><path d="M1 18s4-2 11-2 11 2 11 2"/></svg>
-      LoRa Mesh Network . Connected: <span id="sync-time">4s ago</span>
-    </span>
+    <span>LoRa Mesh Network . Connected: <span id="sync-time">4s ago</span></span>
     <span>SentinelWear v1.0 . Shift 2</span>
   </div>
 </div>
@@ -624,20 +585,19 @@
 </div>
 
 <script>
-// Data Storage Matrices
-const MINERS = [
+// Initial Data Structure
+let MINERS = [
   { id:'RK', name:'Ramesh Kumar',  loc:'Tunnel B . 220m', bpm:78,  spo2:97, co:14, temp:30, status:'ok' },
   { id:'SM', name:'Suresh Mahato', loc:'Tunnel A . 185m', bpm:75,  spo2:98, co:12, temp:32, status:'ok' },
   { id:'AY', name:'Arjun Yadav',   loc:'Tunnel C . 310m', bpm:84,  spo2:96, co:15, temp:31, status:'ok' },
   { id:'PD', name:'Pradeep Das',   loc:'Tunnel B . 250m', bpm:72,  spo2:98, co:12, temp:29, status:'ok' },
   { id:'MG', name:'Manoj Ghosh',   loc:'Tunnel A . 160m', bpm:81,  spo2:97, co:16, temp:30, status:'ok' },
   { id:'BK', name:'Birsa Kalindi', loc:'Tunnel C . 290m', bpm:75,  spo2:98, co:10, temp:29, status:'ok' },
-  { id:'RS', name:'Ravi Singh',    loc:'Tunnel B . 200m', bpm:85,  spo2:96, co:17, temp:31, status:'ok' },
+  { id:'RS', name:'Ravi Singh',    loc:'Tunnel B . 200m', bpm:85,  spo2:96, co:17, temp:31, status:'ok' }, // Starts at position 7 (hidden from top 5 overview)
   { id:'DM', name:'Dilip Mandal',  loc:'Tunnel A . 210m', bpm:79,  spo2:97, co:15, temp:30, status:'ok' },
 ];
 
 const ALERTS = [];
-
 const GAUGES = [
   { label:'CO (ppm)',    val:12, max:50,  pct:24, color:'#0E9488', unit:'ppm' },
   { label:'CH4 (%LEL)',  val:0.1,max:5,   pct:2,  color:'#0E9488', unit:'%' },
@@ -656,16 +616,10 @@ function evaluateMinersRiskForAdminSos() {
   
   if (hasHighRiskMiner) {
     sosBar.style.display = 'flex';
-    if (riskValue) {
-      riskValue.textContent = 'High Risk';
-      riskValue.style.color = 'var(--red)';
-    }
+    if (riskValue) { riskValue.textContent = 'High Risk'; riskValue.style.color = 'var(--red)'; }
   } else {
     sosBar.style.display = 'none';
-    if (riskValue) {
-      riskValue.textContent = 'Normal';
-      riskValue.style.color = 'var(--green)';
-    }
+    if (riskValue) { riskValue.textContent = 'Normal'; riskValue.style.color = 'var(--green)'; }
   }
 }
 
@@ -674,19 +628,26 @@ function broadcastSystemSos() {
 }
 
 function executeManualSosOverride(id) {
-  const m = MINERS.find(x => x.id === id);
-  if (!m) return;
+  const idx = MINERS.findIndex(x => x.id === id);
+  if (idx === -1) return;
 
+  const m = MINERS[idx];
   m.status = 'alert';
   m.bpm = 115;
   m.co = 26;
+
+  // Bring to top of array if not in the main dashboard visibility window
+  if (idx >= 5) {
+    MINERS.splice(idx, 1);
+    MINERS.unshift(m);
+  }
 
   ALERTS.unshift({
     type: 'red',
     icon: 'SOS',
     text: 'MANUAL OVERRIDE - ' + m.name,
     time: 'Just Now',
-    sub: 'Console forced emergency activation.'
+    sub: 'Forced emergency activation.'
   });
 
   syncGlobalUIRenderers();
@@ -694,28 +655,36 @@ function executeManualSosOverride(id) {
 }
 
 function triggerMinerHardwareSosButton() {
-  const randomMiner = MINERS[Math.floor(Math.random() * MINERS.length)];
+  // Target Ravi Singh dynamically to test behavior, or default fallback to any miner
+  let targetIdx = MINERS.findIndex(m => m.id === 'RS');
+  if (targetIdx === -1) targetIdx = Math.floor(Math.random() * MINERS.length);
   
-  randomMiner.status = 'alert';
-  randomMiner.bpm = 122;
-  randomMiner.co = 28;
+  const targetMiner = MINERS[targetIdx];
+  targetMiner.status = 'alert';
+  targetMiner.bpm = 122;
+  targetMiner.co = 28;
+
+  // CRITICAL UPDATE: Extract miner and push to the very top array layer 
+  // ensuring their record maps directly inside the slice(0,5) rendering stream.
+  MINERS.splice(targetIdx, 1);
+  MINERS.unshift(targetMiner);
 
   ALERTS.unshift({
     type: 'red',
     icon: 'SOS',
-    text: 'SUIT HARDWARE SOS - ' + randomMiner.name,
+    text: 'SUIT HARDWARE SOS - ' + targetMiner.name,
     time: 'Just Now',
-    sub: 'Jacket hardware button trigger.'
+    sub: 'Hardware link triggered.'
   });
 
   syncGlobalUIRenderers();
 
   const modalOverlay = document.getElementById('miner-modal');
   if (modalOverlay.classList.contains('open')) {
-    openModal(randomMiner.id);
+    openModal(targetMiner.id);
   }
 
-  alert('WEARABLE EVENT: ' + randomMiner.name + ' pressed physical suit SOS button.');
+  alert('WEARABLE HARDWARE TRIGGER: ' + targetMiner.name + ' pressed physical suit SOS button. Record bumped to Dashboard view.');
 }
 
 function syncGlobalUIRenderers() {
@@ -739,7 +708,7 @@ function syncGlobalUIRenderers() {
 }
 
 function renderDashboard() {
-  /* Updated the dynamic generation layout to insert the location data parameter explicitly */
+  // slice(0,5) renders the top 5 spots. The SOS assignment guarantees emergency entries sit at indices 0+.
   document.getElementById('miner-list').innerHTML = MINERS.slice(0,5).map(m => `
     <div class="miner-row" onclick="openModal('${m.id}')">
       <div class="miner-info">
@@ -766,7 +735,7 @@ function renderDashboard() {
     ALERTS.map(a => `
     <div class="alert-row">
       <div class="alert-icon ${a.type}"><span style="font-size:10px">${a.icon}</span></div>
-      <div><div class="alert-text">${a.text}</div><div class="alert-time">${a.time} . ${a.sub}</div></div>
+      <div><div class="alert-text">${a.text}</div><div class="alert-time">${a.time}</div></div>
     </div>`).join('');
 
   document.getElementById('gauge-list').innerHTML = GAUGES.map(g => `
@@ -792,16 +761,14 @@ function renderAllMiners() {
       <span style="color:${m.co>20?'var(--amber)':'var(--text)'}">${m.co} ppm</span>
       <span class="pill ${pillClass(m.status)}">${pillText(m.status)}</span>
     </div>`).join('');
-    
-  evaluateMinersRiskForAdminSos();
 }
 
 function renderAlerts() {
   const sev = t => t==='red'?'critical':t==='amber'?'warning':'resolved';
   
   if (ALERTS.length === 0) {
-    document.getElementById('alerts-full-list').innerHTML = `<div style="padding:24px;text-align:center;background:white;border-radius:12px;border:1px solid var(--border);font-size:13px;color:var(--muted)">All clear. No safety threshold logs.</div>`;
-    document.getElementById('report-alerts').innerHTML = `<div style="padding:12px 0;font-size:12px;color:var(--muted)">Zero environment exceptions logs.</div>`;
+    document.getElementById('alerts-full-list').innerHTML = `<div style="padding:24px;text-align:center;color:var(--muted)">All clear.</div>`;
+    document.getElementById('report-alerts').innerHTML = `<div style="padding:12px 0;color:var(--muted)">Zero environment exceptions logs.</div>`;
     return;
   }
 
@@ -809,18 +776,11 @@ function renderAlerts() {
     <div class="alerts-page-row">
       <div class="alert-icon ${a.type}" style="width:36px;height:32px;margin-right:4px;"><span style="font-size:10px">${a.icon}</span></div>
       <div style="flex:1; min-width:0;">
-        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:3px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
           <span style="font-size:13px;font-weight:600">${a.text}</span>
           <span class="alert-sev ${sev(a.type)}">${sev(a.type)}</span>
         </div>
-        <div style="font-size:11px;color:var(--muted)">${a.time} . ${a.sub}</div>
       </div>
-    </div>`).join('');
-
-  document.getElementById('report-alerts').innerHTML = ALERTS.map(a => `
-    <div style="padding:8px 0;border-bottom:1px solid #F0F4F4;font-size:12px">
-      <span class="alert-sev ${a.type==='red'?'critical':a.type==='amber'?'warning':'resolved'}" style="margin-right:8px">${a.type==='red'?'critical':a.type==='amber'?'warning':'resolved'}</span>
-      ${a.text} - <span style="color:var(--muted)">${a.time}</span>
     </div>`).join('');
 }
 
@@ -833,13 +793,7 @@ function openModal(id) {
     <div style="font-size:12px; color:var(--muted); margin-bottom:12px;">Location: ${m.loc}</div>
     <div class="miner-detail-grid">
       <div class="detail-stat"><div class="detail-val ${m.bpm>100?'red':''}">${m.bpm}</div><div class="detail-label">Pulse (BPM)</div></div>
-      <div class="detail-stat"><div class="detail-val ${m.spo2<95?'amber':''}">${m.spo2}%</div><div class="detail-label">Oxygen (SpO2)</div></div>
-      <div class="detail-stat"><div class="detail-val ${m.co>20?'amber':''}">${m.co} ppm</div><div class="detail-label">CO Level</div></div>
-      <div class="detail-stat"><div class="detail-val ${m.temp>33?'amber':''}">${m.temp}°C</div><div class="detail-label">Jacket Temp</div></div>
-    </div>
-    <div style="background:var(--off-wh);border-radius:8px;padding:12px;margin-bottom:14px;border: 1px solid #B2DFDB">
-      <div style="font-size:10px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;font-weight:600">AI Safety Index</div>
-      <div style="font-size:12px;font-weight:600;color:${m.status==='alert'?'var(--red)':m.status==='warn'?'var(--amber)':'var(--teal)'}">${m.status==='alert'?'High Risk Flag - Immediate Attention':'Low Risk - Safe Monitoring Status'}</div>
+      <div class="detail-stat"><div class="detail-val">${m.spo2}%</div><div class="detail-label">Oxygen (SpO2)</div></div>
     </div>
     <div class="modal-actions">
       <button class="btn btn-danger" onclick="executeManualSosOverride('${m.id}')">Force Dispatch Alert</button>
@@ -848,44 +802,32 @@ function openModal(id) {
   document.getElementById('miner-modal').classList.add('open');
 }
 
-function closeModal() {
-  document.getElementById('miner-modal').classList.remove('open');
-}
+function closeModal() { document.getElementById('miner-modal').classList.remove('open'); }
 
 function showPage(name, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   el.classList.add('active');
-  
-  el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 }
 
 function doLogin() {
   const u = document.getElementById('username').value.trim();
   const p = document.getElementById('password').value.trim();
-  const err = document.getElementById('login-error');
-  
   if (u==='admin' && p==='sentinel123') {
     document.getElementById('login-screen').style.display='none';
     document.getElementById('app').style.display='flex';
     document.getElementById('report-date').textContent = new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
-    
     syncGlobalUIRenderers();
     startClock();
   } else {
-    err.style.display='block';
-    document.getElementById('password').value='';
+    document.getElementById('login-error').style.display='block';
   }
 }
 
 function doLogout() {
   document.getElementById('app').style.display='none';
   document.getElementById('login-screen').style.display='flex';
-  document.getElementById('username').value='';
-  document.getElementById('password').value='';
-  document.getElementById('login-error').style.display='none';
-  document.getElementById('system-sos-bar').style.display = 'none';
 }
 
 function startClock() {
@@ -896,12 +838,6 @@ function startClock() {
     document.getElementById('env-time').textContent = 'Live . '+t;
   }
   tick(); setInterval(tick, 10000);
-
-  let sync=4;
-  setInterval(()=>{
-    sync = Math.floor(Math.random()*12)+2;
-    document.getElementById('sync-time').textContent = sync+'s ago';
-  }, 8000);
 }
 
 document.getElementById('password').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
