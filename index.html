@@ -70,6 +70,14 @@
   }
   .login-btn:hover { background: var(--teal-dk); }
   .login-error { font-size: 12px; color: var(--red); margin-top: 8px; display: none; }
+  
+  /* CREDENTIALS WATERMARK HINT */
+  .credentials-hint {
+    margin-top: 20px; padding: 10px; background: var(--teal-bg); 
+    border: 1px dashed var(--teal); border-radius: 8px; text-align: center;
+  }
+  .credentials-hint p { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .credentials-hint code { font-size: 12px; color: var(--teal-dk); font-weight: bold; }
 
   /* APP SHELL */
   #app { display: none; height: 100vh; flex-direction: column; }
@@ -271,6 +279,12 @@
     </div>
     <div class="login-error" id="login-error">Incorrect username or password.</div>
     <button class="login-btn" onclick="doLogin()">Sign in</button>
+    
+    <!-- DEMO CREDENTIALS INFORMATION BLOCK -->
+    <div class="credentials-hint">
+      <p>Supervisor Sandbox Credentials:</p>
+      <p>User: <code>admin</code> &nbsp;|&nbsp; Pass: <code>sentinel123</code></p>
+    </div>
   </div>
 </div>
 
@@ -751,6 +765,7 @@ function closeModal() {
   document.getElementById('miner-modal').classList.remove('open');
 }
 
+// Handle viewport structural navigation transitions
 function showPage(name, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
