@@ -120,11 +120,11 @@
     width: 100%; background: var(--teal-dk); flex-shrink: 0; display: flex; 
     flex-direction: row; padding: 0; overflow-x: auto; overflow-y: hidden;
     border-bottom: 1px solid rgba(255,255,255,0.1);
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    scrollbar-width: none;
   }
-  .sidebar::-webkit-scrollbar { display: none; } /* Hide scrollbar for Chrome/Safari */
+  .sidebar::-webkit-scrollbar { display: none; }
   
-  .nav-section { display: none; } /* Hide layout sections headers on mobile row views */
+  .nav-section { display: none; }
   
   .nav-item {
     padding: 14px 16px; font-size: 13px; color: #B2DFDB; cursor: pointer;
@@ -188,7 +188,7 @@
   /* PANELS */
   .panels { display: grid; grid-template-columns: 1fr; gap: 14px; }
   @media (min-width: 992px) {
-    .panels { grid-template-columns: 1.2fr 1fr; gap: 16px; }
+    .panels { grid-template-columns: 1.3fr 1fr; gap: 16px; }
   }
   .panel { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
   .panel-head { padding: 12px 14px; background: var(--teal-bg); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); gap: 4px; }
@@ -196,24 +196,60 @@
   .panel-meta { font-size: 10px; color: var(--muted); }
   .panel-body { padding: 4px 0; }
 
+  /* DASHBOARD TABLE HEADERS (New desktop layout) */
+  .dashboard-table-header {
+    display: none;
+    grid-template-columns: 2fr 2fr 1.5fr 1fr;
+    padding: 10px 14px;
+    background: #EDF6F5;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  @media (min-width: 576px) {
+    .dashboard-table-header { display: grid; }
+  }
+
   /* MINER ROWS */
   .miner-row {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; flex-direction: row; align-items: center; justify-content: space-between;
     padding: 12px 14px; border-bottom: 1px solid #F0F4F4; cursor: pointer; transition: background .15s;
+    gap: 10px;
   }
   .miner-row:last-child { border-bottom: none; }
   .miner-row:hover { background: var(--off-wh); }
-  .miner-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  
+  .miner-info { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 2; }
   .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--teal); color: white; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .miner-name { font-size: 13px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .miner-loc { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .miner-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  
+  /* Desktop layout explicitly maps location separate from the avatar cluster */
+  .miner-dashboard-loc { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 2; display: none; }
+  .miner-mobile-loc { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  
+  @media (min-width: 576px) {
+    .miner-row { display: grid; grid-template-columns: 2fr 2fr 1.5fr 1fr; justify-content: stretch; align-items: center; }
+    .miner-dashboard-loc { display: block; }
+    .miner-mobile-loc { display: none; }
+    .miner-info { flex: initial; }
+  }
+
+  .miner-right { display: flex; align-items: center; gap: 10px; justify-content: space-between; flex: 1.5; }
+  @media (min-width: 576px) { .miner-right { flex: initial; } }
+  
   .vitals { display: flex; gap: 10px; }
   .vital { text-align: center; min-width: 36px; }
   .vital-val { font-size: 12px; font-weight: 600; color: var(--text); }
   .vital-key { font-size: 9px; color: var(--muted); font-weight: 600; }
   .vital-val.bad { color: var(--red); }
-  .pill { font-size: 9px; padding: 3px 8px; border-radius: 20px; font-weight: 700; white-space: nowrap; text-transform: uppercase; }
+  
+  .pill-container { display: flex; justify-content: flex-end; flex: 1; }
+  @media (min-width: 576px) { .pill-container { flex: initial; } }
+  
+  .pill { font-size: 9px; padding: 3px 8px; border-radius: 20px; font-weight: 700; white-space: nowrap; text-transform: uppercase; text-align: center; }
   .pill-ok { background: var(--teal-bg); color: var(--teal-dk); }
   .pill-warn { background: #FFFBEB; color: #854F0B; }
   .pill-alert { background: #FFEBEE; color: #B71C1C; }
@@ -357,7 +393,6 @@
     <div class="login-error" id="login-error">Incorrect username or password.</div>
     <button class="login-btn" onclick="doLogin()">Sign in</button>
     
-    <!-- DEMO CREDENTIALS INFORMATION BLOCK -->
     <div class="credentials-hint">
       <p>Supervisor Sandbox Credentials:</p>
       <p>User: <code>admin</code> &nbsp;|&nbsp; Pass: <code>sentinel123</code></p>
@@ -455,6 +490,10 @@
             <div class="panel-head">
               <span class="panel-title">Miner status overview</span>
               <span class="panel-meta">Tap row for console actions</span>
+            </div>
+            <!-- Added table layout structural elements explicitly for location layout column mapping -->
+            <div class="dashboard-table-header">
+              <span>Miner</span><span>Location</span><span>Telemetry</span><span style="text-align: right;">Status</span>
             </div>
             <div class="panel-body" id="miner-list"></div>
           </div>
@@ -700,17 +739,24 @@ function syncGlobalUIRenderers() {
 }
 
 function renderDashboard() {
+  /* Updated the dynamic generation layout to insert the location data parameter explicitly */
   document.getElementById('miner-list').innerHTML = MINERS.slice(0,5).map(m => `
     <div class="miner-row" onclick="openModal('${m.id}')">
       <div class="miner-info">
         <div class="avatar" style="background:${avatarColor(m.status)}">${m.id}</div>
-        <div style="min-width:0;"><div class="miner-name">${m.name}</div><div class="miner-loc">${m.loc}</div></div>
+        <div style="min-width:0;">
+          <div class="miner-name">${m.name}</div>
+          <div class="miner-mobile-loc">${m.loc}</div>
+        </div>
       </div>
+      <div class="miner-dashboard-loc">${m.loc}</div>
       <div class="miner-right">
         <div class="vitals">
           <div class="vital"><div class="vital-val ${m.bpm>100?'bad':''}">${m.bpm}</div><div class="vital-key">BPM</div></div>
           <div class="vital"><div class="vital-val">${m.spo2}%</div><div class="vital-key">SpO2</div></div>
         </div>
+      </div>
+      <div class="pill-container">
         <span class="pill ${pillClass(m.status)}">${pillText(m.status)}</span>
       </div>
     </div>`).join('');
@@ -812,7 +858,6 @@ function showPage(name, el) {
   document.getElementById('page-'+name).classList.add('active');
   el.classList.add('active');
   
-  // Mobile UI enhancement auto-scalls the sub-nav menu bar horizontally on active selection click
   el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 }
 
